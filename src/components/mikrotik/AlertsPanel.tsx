@@ -1,9 +1,9 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { AlertTriangle, CheckCircle, XCircle, Clock, Bell, Settings } from 'lucide-react';
+import { AlertTriangle, CheckCircle, XCircle, Clock, Bell, Settings, Mail } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 interface Alert {
   id: string;
@@ -14,6 +14,7 @@ interface Alert {
   timestamp: string;
   status: 'active' | 'acknowledged' | 'resolved';
   category: 'connectivity' | 'performance' | 'security' | 'configuration';
+  emailSent?: boolean;
 }
 
 interface AlertsPanelProps {
@@ -21,6 +22,7 @@ interface AlertsPanelProps {
 }
 
 const AlertsPanel: React.FC<AlertsPanelProps> = ({ compact = false }) => {
+  const { toast } = useToast();
   const [alerts, setAlerts] = useState<Alert[]>([
     {
       id: '1',
@@ -30,7 +32,8 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ compact = false }) => {
       device: 'RouterOS-Main',
       timestamp: '2024-01-15 14:30:25',
       status: 'active',
-      category: 'connectivity'
+      category: 'connectivity',
+      emailSent: true
     },
     {
       id: '2',
@@ -73,6 +76,36 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ compact = false }) => {
       category: 'security'
     }
   ]);
+
+  // Simular envío automático de emails para nuevas alertas
+  const sendEmailAlert = async (alert: Alert) => {
+    try {
+      // Verificar si las alertas por email están habilitadas
+      const emailConfig = localStorage.getItem('mikrotik-email-config');
+      if (!emailConfig) {
+        console.log('Email alerts not configured');
+        return;
+      }
+
+      const config = JSON.parse(emailConfig);
+      if (!config.enabled || !config.alertTypes.includes(alert.type)) {
+        console.log('Email alerts disabled or alert type not configured');
+        return;
+      }
+
+      // Simular envío de email
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Marcar alerta como enviada por email
+      setAlerts(prev => prev.map(a => 
+        a.id === alert.id ? { ...a, emailSent: true } : a
+      ));
+
+      console.log(`Email alert sent for: ${alert.title}`);
+    } catch (error) {
+      console.error('Failed to send email alert:', error);
+    }
+  };
 
   const getAlertIcon = (type: string, status: string) => {
     if (status === 'resolved') {
@@ -129,6 +162,22 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ compact = false }) => {
     ));
   };
 
+  const resendEmailAlert = async (alert: Alert) => {
+    try {
+      await sendEmailAlert(alert);
+      toast({
+        title: "Email reenviado",
+        description: `La alerta "${alert.title}" ha sido reenviada por email.`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error al reenviar",
+        description: "No se pudo reenviar la alerta por email.",
+        variant: "destructive",
+      });
+    }
+  };
+
   if (compact) {
     const activeAlerts = alerts.filter(alert => alert.status === 'active').slice(0, 3);
     return (
@@ -146,7 +195,15 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ compact = false }) => {
                 <p className="font-medium text-sm truncate">{alert.title}</p>
                 <p className="text-xs text-gray-500">{alert.device}</p>
               </div>
-              {getAlertBadge(alert.type, alert.status)}
+              <div className="flex flex-col space-y-1">
+                {getAlertBadge(alert.type, alert.status)}
+                {alert.emailSent && (
+                  <Badge variant="outline" className="text-xs">
+                    <Mail className="h-3 w-3 mr-1" />
+                    Email
+                  </Badge>
+                )}
+              </div>
             </div>
           ))
         )}
@@ -245,6 +302,12 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ compact = false }) => {
                       <div className="flex items-center space-x-4 mt-2 text-xs text-gray-500">
                         <span>Equipo: {alert.device}</span>
                         <span>Fecha: {alert.timestamp}</span>
+                        {alert.emailSent && (
+                          <span className="flex items-center text-green-600">
+                            <Mail className="h-3 w-3 mr-1" />
+                            Email enviado
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -254,24 +317,36 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ compact = false }) => {
                   </div>
                 </div>
                 
-                {alert.status === 'active' && (
-                  <div className="flex space-x-2">
+                <div className="flex space-x-2">
+                  {alert.status === 'active' && (
+                    <>
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => acknowledgeAlert(alert.id)}
+                      >
+                        Reconocer
+                      </Button>
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => resolveAlert(alert.id)}
+                      >
+                        Resolver
+                      </Button>
+                    </>
+                  )}
+                  {alert.status !== 'resolved' && (
                     <Button 
                       size="sm" 
                       variant="outline"
-                      onClick={() => acknowledgeAlert(alert.id)}
+                      onClick={() => resendEmailAlert(alert)}
                     >
-                      Reconocer
+                      <Mail className="h-4 w-4 mr-1" />
+                      Reenviar Email
                     </Button>
-                    <Button 
-                      size="sm" 
-                      variant="outline"
-                      onClick={() => resolveAlert(alert.id)}
-                    >
-                      Resolver
-                    </Button>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             ))}
           </div>

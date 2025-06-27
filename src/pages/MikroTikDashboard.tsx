@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Router, Wifi, Shield, AlertTriangle, Network, Plus } from 'lucide-react';
+import { Router, Wifi, Shield, AlertTriangle, Network, Plus, Mail } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -10,6 +10,7 @@ import VlanManagement from '@/components/mikrotik/VlanManagement';
 import VpnStatus from '@/components/mikrotik/VpnStatus';
 import AlertsPanel from '@/components/mikrotik/AlertsPanel';
 import DeviceForm from '@/components/mikrotik/DeviceForm';
+import EmailAlertConfig from '@/components/mikrotik/EmailAlertConfig';
 
 const MikroTikDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -48,7 +49,7 @@ const MikroTikDashboard = () => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6 lg:w-4/5">
+          <TabsList className="grid w-full grid-cols-7 lg:w-5/6">
             <TabsTrigger value="overview" className="flex items-center space-x-2">
               <Router className="h-4 w-4" />
               <span>Resumen</span>
@@ -72,6 +73,10 @@ const MikroTikDashboard = () => {
             <TabsTrigger value="alerts" className="flex items-center space-x-2">
               <AlertTriangle className="h-4 w-4" />
               <span>Alertas</span>
+            </TabsTrigger>
+            <TabsTrigger value="email-config" className="flex items-center space-x-2">
+              <Mail className="h-4 w-4" />
+              <span>Email</span>
             </TabsTrigger>
           </TabsList>
 
@@ -167,6 +172,10 @@ const MikroTikDashboard = () => {
 
           <TabsContent value="alerts">
             <AlertsPanel />
+          </TabsContent>
+
+          <TabsContent value="email-config">
+            <EmailAlertConfig />
           </TabsContent>
         </Tabs>
 
