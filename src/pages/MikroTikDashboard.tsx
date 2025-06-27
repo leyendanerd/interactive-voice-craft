@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Router, Wifi, Shield, AlertTriangle, Network, Plus, Mail } from 'lucide-react';
+import { Router, Wifi, Shield, AlertTriangle, Network, Plus, Mail, HardDrive, Users } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -11,6 +11,8 @@ import VpnStatus from '@/components/mikrotik/VpnStatus';
 import AlertsPanel from '@/components/mikrotik/AlertsPanel';
 import DeviceForm from '@/components/mikrotik/DeviceForm';
 import EmailAlertConfig from '@/components/mikrotik/EmailAlertConfig';
+import BackupManagement from '@/components/mikrotik/BackupManagement';
+import UserManagement from '@/components/mikrotik/UserManagement';
 
 const MikroTikDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -49,7 +51,7 @@ const MikroTikDashboard = () => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7 lg:w-5/6">
+          <TabsList className="grid w-full grid-cols-9 lg:w-full">
             <TabsTrigger value="overview" className="flex items-center space-x-2">
               <Router className="h-4 w-4" />
               <span>Resumen</span>
@@ -77,6 +79,14 @@ const MikroTikDashboard = () => {
             <TabsTrigger value="email-config" className="flex items-center space-x-2">
               <Mail className="h-4 w-4" />
               <span>Email</span>
+            </TabsTrigger>
+            <TabsTrigger value="backups" className="flex items-center space-x-2">
+              <HardDrive className="h-4 w-4" />
+              <span>Backups</span>
+            </TabsTrigger>
+            <TabsTrigger value="users" className="flex items-center space-x-2">
+              <Users className="h-4 w-4" />
+              <span>Usuarios</span>
             </TabsTrigger>
           </TabsList>
 
@@ -176,6 +186,14 @@ const MikroTikDashboard = () => {
 
           <TabsContent value="email-config">
             <EmailAlertConfig />
+          </TabsContent>
+
+          <TabsContent value="backups">
+            <BackupManagement selectedDevice={selectedDevice} />
+          </TabsContent>
+
+          <TabsContent value="users">
+            <UserManagement />
           </TabsContent>
         </Tabs>
 

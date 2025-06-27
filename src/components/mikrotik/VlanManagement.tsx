@@ -3,9 +3,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Network, Plus, Edit, Trash2, Settings } from 'lucide-react';
+import { Network, Settings, Edit, Trash2 } from 'lucide-react';
 
 interface Vlan {
   id: string;
@@ -61,100 +59,16 @@ const VlanManagement: React.FC<VlanManagementProps> = ({ selectedDevice }) => {
     }
   ]);
 
-  const [showForm, setShowForm] = useState(false);
-  const [newVlan, setNewVlan] = useState({
-    vlanId: '',
-    name: '',
-    interface: 'bridge',
-    description: ''
-  });
-
-  const handleCreateVlan = () => {
-    if (newVlan.vlanId && newVlan.name) {
-      const vlan: Vlan = {
-        id: Date.now().toString(),
-        vlanId: parseInt(newVlan.vlanId),
-        name: newVlan.name,
-        interface: newVlan.interface,
-        status: 'active',
-        ports: [],
-        description: newVlan.description
-      };
-      setVlans([...vlans, vlan]);
-      setNewVlan({ vlanId: '', name: '', interface: 'bridge', description: '' });
-      setShowForm(false);
-    }
-  };
-
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold">Gestión de VLANs</h2>
+          <h2 className="text-2xl font-bold">VLANs Configuradas</h2>
           <p className="text-gray-600">
-            {selectedDevice ? `Equipo: ${selectedDevice}` : 'Gestionar VLANs en todos los equipos'}
+            {selectedDevice ? `Equipo: ${selectedDevice}` : 'Selecciona un equipo para ver sus VLANs'}
           </p>
         </div>
-        <Button onClick={() => setShowForm(true)} className="flex items-center space-x-2">
-          <Plus className="h-4 w-4" />
-          <span>Nueva VLAN</span>
-        </Button>
       </div>
-
-      {/* Formulario para nueva VLAN */}
-      {showForm && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Crear Nueva VLAN</CardTitle>
-            <CardDescription>Configurar una nueva VLAN en el equipo seleccionado</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="vlanId">ID de VLAN</Label>
-                <Input
-                  id="vlanId"
-                  type="number"
-                  value={newVlan.vlanId}
-                  onChange={(e) => setNewVlan({...newVlan, vlanId: e.target.value})}
-                  placeholder="Ej: 40"
-                />
-              </div>
-              <div>
-                <Label htmlFor="vlanName">Nombre</Label>
-                <Input
-                  id="vlanName"
-                  value={newVlan.name}
-                  onChange={(e) => setNewVlan({...newVlan, name: e.target.value})}
-                  placeholder="VLAN_NAME"
-                />
-              </div>
-              <div>
-                <Label htmlFor="interface">Interface</Label>
-                <Input
-                  id="interface"
-                  value={newVlan.interface}
-                  onChange={(e) => setNewVlan({...newVlan, interface: e.target.value})}
-                  placeholder="bridge"
-                />
-              </div>
-              <div>
-                <Label htmlFor="description">Descripción</Label>
-                <Input
-                  id="description"
-                  value={newVlan.description}
-                  onChange={(e) => setNewVlan({...newVlan, description: e.target.value})}
-                  placeholder="Descripción de la VLAN"
-                />
-              </div>
-            </div>
-            <div className="flex space-x-2 mt-4">
-              <Button onClick={handleCreateVlan}>Crear VLAN</Button>
-              <Button variant="outline" onClick={() => setShowForm(false)}>Cancelar</Button>
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Lista de VLANs */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -213,6 +127,15 @@ const VlanManagement: React.FC<VlanManagementProps> = ({ selectedDevice }) => {
           </Card>
         ))}
       </div>
+
+      {vlans.length === 0 && (
+        <Card>
+          <CardContent className="text-center py-8">
+            <Network className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <p className="text-gray-500">No se encontraron VLANs configuradas en este equipo</p>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };
