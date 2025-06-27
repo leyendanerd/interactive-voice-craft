@@ -1,9 +1,10 @@
 
 import React, { useState } from 'react';
-import { Phone, Settings, BarChart3, PlayCircle, Users, Headphones } from 'lucide-react';
+import { Phone, Settings, BarChart3, PlayCircle, Users, Headphones, Router, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Link } from 'react-router-dom';
 import CallFlowBuilder from '@/components/CallFlowBuilder';
 import IVRSettings from '@/components/IVRSettings';
 import CallAnalytics from '@/components/CallAnalytics';
@@ -23,14 +24,21 @@ const Index = () => {
                 <Phone className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-slate-900">Asterisk IVR Manager</h1>
-                <p className="text-sm text-slate-500">Python AGI System</p>
+                <h1 className="text-xl font-bold text-slate-900">Panel de Administración</h1>
+                <p className="text-sm text-slate-500">Sistema de Gestión Integrado</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
+              <Link to="/mikrotik">
+                <Button variant="outline" className="flex items-center space-x-2">
+                  <Router className="h-4 w-4" />
+                  <span>MikroTik Dashboard</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
               <div className="flex items-center space-x-2 bg-green-50 px-3 py-1 rounded-full">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-sm font-medium text-green-700">System Online</span>
+                <span className="text-sm font-medium text-green-700">Sistema Online</span>
               </div>
             </div>
           </div>
@@ -39,6 +47,65 @@ const Index = () => {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Quick Access Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Phone className="h-6 w-6 text-blue-600" />
+                <span>Sistema IVR Asterisk</span>
+              </CardTitle>
+              <CardDescription>Gestión completa del sistema IVR con Python AGI</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-gray-600 mb-4">
+                Administra flujos de llamadas, configuraciones IVR, monitoreo de llamadas activas y análisis detallado.
+              </p>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span>AGI Server Activo</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <span>Puerto 4573</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Link to="/mikrotik">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Router className="h-6 w-6 text-red-600" />
+                  <span>Dashboard MikroTik</span>
+                </CardTitle>
+                <CardDescription>Administración completa de equipos MikroTik</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-600 mb-4">
+                  Monitorea tráfico de interfaces, gestiona VLANs, supervisa VPNs y recibe alertas en tiempo real.
+                </p>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <span>API Conectada</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                    <span>Multi-Equipo</span>
+                  </div>
+                </div>
+                <Button className="w-full mt-4 flex items-center justify-center space-x-2">
+                  <span>Acceder al Dashboard</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </CardContent>
+            </Card>
+          </Link>
+        </div>
+
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-5 lg:w-2/3">
             <TabsTrigger value="dashboard" className="flex items-center space-x-2">
