@@ -20,44 +20,7 @@ interface VlanManagementProps {
 }
 
 const VlanManagement: React.FC<VlanManagementProps> = ({ selectedDevice }) => {
-  const [vlans, setVlans] = useState<Vlan[]>([
-    {
-      id: '1',
-      vlanId: 10,
-      name: 'VLAN_ADMIN',
-      interface: 'bridge',
-      status: 'active',
-      ports: ['ether2', 'ether3'],
-      description: 'Red de administración'
-    },
-    {
-      id: '2',
-      vlanId: 20,
-      name: 'VLAN_USERS',
-      interface: 'bridge',
-      status: 'active',
-      ports: ['ether4', 'ether5', 'wlan1'],
-      description: 'Red de usuarios'
-    },
-    {
-      id: '3',
-      vlanId: 30,
-      name: 'VLAN_GUEST',
-      interface: 'bridge',
-      status: 'active',
-      ports: ['wlan1'],
-      description: 'Red de invitados'
-    },
-    {
-      id: '4',
-      vlanId: 100,
-      name: 'VLAN_SERVERS',
-      interface: 'bridge',
-      status: 'inactive',
-      ports: ['ether6'],
-      description: 'Red de servidores'
-    }
-  ]);
+  const [vlans, setVlans] = useState<Vlan[]>([]);
 
   return (
     <div className="space-y-6">

@@ -97,7 +97,7 @@ const MikroTikDashboard = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-blue-100">Equipos Activos</p>
-                      <p className="text-3xl font-bold">5</p>
+                      <p className="text-3xl font-bold">0</p>
                     </div>
                     <Router className="h-12 w-12 text-blue-200" />
                   </div>
@@ -109,7 +109,7 @@ const MikroTikDashboard = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-green-100">Interfaces UP</p>
-                      <p className="text-3xl font-bold">23</p>
+                      <p className="text-3xl font-bold">0</p>
                     </div>
                     <Wifi className="h-12 w-12 text-green-200" />
                   </div>
@@ -121,7 +121,7 @@ const MikroTikDashboard = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-purple-100">VPNs Activas</p>
-                      <p className="text-3xl font-bold">8</p>
+                      <p className="text-3xl font-bold">0</p>
                     </div>
                     <Shield className="h-12 w-12 text-purple-200" />
                   </div>
@@ -133,7 +133,7 @@ const MikroTikDashboard = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-amber-100">Alertas</p>
-                      <p className="text-3xl font-bold">3</p>
+                      <p className="text-3xl font-bold">0</p>
                     </div>
                     <AlertTriangle className="h-12 w-12 text-amber-200" />
                   </div>

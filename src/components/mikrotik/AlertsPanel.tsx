@@ -23,59 +23,7 @@ interface AlertsPanelProps {
 
 const AlertsPanel: React.FC<AlertsPanelProps> = ({ compact = false }) => {
   const { toast } = useToast();
-  const [alerts, setAlerts] = useState<Alert[]>([
-    {
-      id: '1',
-      type: 'critical',
-      title: 'Interfaz ether1 desconectada',
-      description: 'La interfaz principal ether1 se encuentra desconectada desde hace 5 minutos',
-      device: 'RouterOS-Main',
-      timestamp: '2024-01-15 14:30:25',
-      status: 'active',
-      category: 'connectivity',
-      emailSent: true
-    },
-    {
-      id: '2',
-      type: 'warning',
-      title: 'Uso alto de CPU',
-      description: 'El CPU del router está al 85% de uso durante los últimos 15 minutos',
-      device: 'RouterOS-Branch',
-      timestamp: '2024-01-15 14:25:10',
-      status: 'acknowledged',
-      category: 'performance'
-    },
-    {
-      id: '3',
-      type: 'warning',
-      title: 'Conexión VPN inestable',
-      description: 'La conexión VPN con la sucursal se ha desconectado 3 veces en la última hora',
-      device: 'RouterOS-Main',
-      timestamp: '2024-01-15 13:45:33',
-      status: 'active',
-      category: 'connectivity'
-    },
-    {
-      id: '4',
-      type: 'info',
-      title: 'Actualización disponible',
-      description: 'RouterOS 7.12 está disponible para descarga',
-      device: 'RouterOS-Backup',
-      timestamp: '2024-01-15 12:00:00',
-      status: 'active',
-      category: 'configuration'
-    },
-    {
-      id: '5',
-      type: 'critical',
-      title: 'Intento de acceso no autorizado',
-      description: 'Se detectaron múltiples intentos de login fallidos desde 203.0.113.45',
-      device: 'RouterOS-Main',
-      timestamp: '2024-01-15 11:15:22',
-      status: 'resolved',
-      category: 'security'
-    }
-  ]);
+  const [alerts, setAlerts] = useState<Alert[]>([]);
 
   // Simular envío automático de emails para nuevas alertas
   const sendEmailAlert = async (alert: Alert) => {
